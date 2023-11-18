@@ -25,6 +25,9 @@ const (
 
 // Speedtest is a speedtest client.
 type Speedtest struct {
+	IdoeAuthType string
+	IdoeToken    string
+
 	User *User
 	Manager
 

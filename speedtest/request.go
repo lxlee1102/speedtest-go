@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/showwin/speedtest-go/speedtest/tcp"
 	"math"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/showwin/speedtest-go/speedtest/tcp"
 )
 
 type (
@@ -143,6 +144,11 @@ func downloadRequest(ctx context.Context, s *Server, w int) error {
 	if err != nil {
 		return err
 	}
+	//add for idoe token
+	if len(s.Context.IdoeToken) > 0 {
+		req.Header.Set("auth-type", s.Context.IdoeAuthType)
+		req.Header.Set("Authorization", s.Context.IdoeToken)
+	}
 
 	resp, err := s.Context.doer.Do(req)
 	if err != nil {
@@ -160,6 +166,11 @@ func uploadRequest(ctx context.Context, s *Server, w int) error {
 	dbg.Printf("Len=%d, XulURL: %s\n", req.ContentLength, s.URL)
 	if err != nil {
 		return err
+	}
+	//add for idoe token
+	if len(s.Context.IdoeToken) > 0 {
+		req.Header.Set("auth-type", s.Context.IdoeAuthType)
+		req.Header.Set("Authorization", s.Context.IdoeToken)
 	}
 
 	req.Header.Set("Content-Type", "application/octet-stream")
